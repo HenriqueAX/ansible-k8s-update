@@ -4,8 +4,8 @@
   delegate_to: "{{ groups['kube-master'][0] }}"
   retries: 3
   delay: 10
-  until: result.stdout.find("SchedulingEnabled") != -1
   register: resultado_uncordon
+  until: resultado_uncordon.stdout.find("SchedulingEnabled") != -1
   ignore_errors: true
 
 - name: Verificar resultado do uncordon
@@ -18,8 +18,8 @@
   retries: 3
   delay: 10
   delegate_to: "{{ groups['kube-master'][0] }}"
-  until: result.stdout.find("SchedulingEnabled") != -1
   register: resultado_aguardar_uncordon
+  until: resultado_aguardar_uncordon.stdout.find("SchedulingEnabled") != -1
   ignore_errors: true
 
 - name: Verificar resultado do aguardar_uncordon
