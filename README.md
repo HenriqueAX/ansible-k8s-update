@@ -3,16 +3,17 @@
 Este repositório contém um projeto Ansible para automatizar a atualização de sistemas em um cluster Kubernetes. A estrutura do projeto é organizada da seguinte forma:
 
 |-- roles
-| |-- atualizar-k8s
-| |-- tasks
-| |-- centos.yml
-| |-- drain.yml
-| |-- main.yml
-| |-- suse.yml
-| |-- ubuntu.yml
-| |-- undrain.yml
+|   |-- atualizar-k8s
+|       |-- tasks
+|           |-- centos.yml
+|           |-- drain.yml
+|           |-- main.yml
+|           |-- suse.yml
+|           |-- ubuntu.yml
+|           |-- undrain.yml
 |-- inventory.ini
 |-- playbook.yml
+
 
 
 ## Descrição dos Arquivos
