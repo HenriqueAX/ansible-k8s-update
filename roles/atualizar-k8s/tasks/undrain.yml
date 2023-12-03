@@ -1,7 +1,7 @@
 ---
 - name: Desabilitar cordon e drain do node
   command: "{{ bin_dir }}/kubectl uncordon {{ inventory_hostname }}"
-  delegate_to: "{{ groups['kube-master'][0] }}"
+  delegate_to: "{{ groups['k8s-master'][0] }}"
   retries: 3
   delay: 10
   register: resultado_uncordon
@@ -17,7 +17,7 @@
   command: "{{ bin_dir }}/kubectl uncordon --wait=false {{ inventory_hostname }}"
   retries: 3
   delay: 10
-  delegate_to: "{{ groups['kube-master'][0] }}"
+  delegate_to: "{{ groups['k8s-master'][0] }}"
   register: resultado_aguardar_uncordon
   until: resultado_aguardar_uncordon.stdout.find("SchedulingEnabled") != -1
   ignore_errors: true
