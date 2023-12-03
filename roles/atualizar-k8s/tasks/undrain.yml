@@ -1,0 +1,28 @@
+---
+- name: Desabilitar cordon e drain do node
+  command: "{{ bin_dir }}/kubectl uncordon {{ inventory_hostname }}"
+  delegate_to: "{{ groups['kube-master'][0] }}"
+  retries: 3
+  delay: 10
+  until: result.stdout.find("SchedulingEnabled") != -1
+  register: resultado_uncordon
+  ignore_errors: true
+
+- name: Verificar resultado do uncordon
+  fail:
+    msg: "Falha ao desabilitar cordon no node {{ inventory_hostname }}"
+  when: "'SchedulingEnabled' not in resultado_uncordon.stdout"
+
+- name: Aguardar node ficar pronto para agendamento novamente
+  command: "{{ bin_dir }}/kubectl uncordon --wait=false {{ inventory_hostname }}"
+  retries: 3
+  delay: 10
+  delegate_to: "{{ groups['kube-master'][0] }}"
+  until: result.stdout.find("SchedulingEnabled") != -1
+  register: resultado_aguardar_uncordon
+  ignore_errors: true
+
+- name: Verificar resultado do aguardar_uncordon
+  fail:
+    msg: "Falha ao aguardar que o node ficasse pronto para agendamento novamente em {{ inventory_hostname }}"
+  when: "'SchedulingEnabled' not in resultado_aguardar_uncordon.stdout"

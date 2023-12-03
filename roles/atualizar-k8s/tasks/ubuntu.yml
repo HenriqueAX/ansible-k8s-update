@@ -1,0 +1,15 @@
+---
+- name: Atualizar todos os pacotes no Ubuntu
+  apt:
+    upgrade: dist
+    update_cache: true
+
+- name: Verificar se reinicialização é necessária no Ubuntu
+  stat:
+    path: /var/run/reboot-required
+  register: reinicializacao_necessaria
+
+- name: Reiniciar o servidor no Ubuntu
+  reboot:
+    post_reboot_delay: 30
+  when: reinicializacao_necessaria.stat.exists

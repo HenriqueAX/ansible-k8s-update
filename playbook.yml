@@ -1,0 +1,9 @@
+---
+- name: Executar playbook de atualização no cluster Kubernetes
+  hosts:
+    - k8s-cluster
+  become: true
+  become_method: sudo
+  serial: 1
+  roles:
+    - atualizar-k8s

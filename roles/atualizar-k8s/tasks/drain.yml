@@ -1,0 +1,28 @@
+---
+- name: Realizar cordon no node
+  command: "{{ bin_dir }}/kubectl cordon {{ inventory_hostname }}"
+  retries: 3
+  delay: 10
+  delegate_to: "{{ groups['kube-master'][0] }}"
+  until: result.stdout.find("SchedulingDisabled") != -1
+  register: resultado_cordon
+  ignore_errors: true
+
+- name: Verificar resultado do cordon
+  fail:
+    msg: "Falha ao realizar cordon no node {{ inventory_hostname }}"
+  when: "'SchedulingDisabled' not in resultado_cordon.stdout"
+
+- name: Drenar o node
+  command: "{{ bin_dir }}/kubectl drain --force --ignore-daemonsets {{ inventory_hostname }}"
+  retries: 3
+  delay: 10
+  delegate_to: "{{ groups['kube-master'][0] }}"
+  until: result.stdout.find("SchedulingDisabled") != -1
+  register: resultado_drain
+  ignore_errors: true
+
+- name: Verificar resultado do drain
+  fail:
+    msg: "Falha ao drenar o node {{ inventory_hostname }}"
+  when: "'SchedulingDisabled' not in resultado_drain.stdout"

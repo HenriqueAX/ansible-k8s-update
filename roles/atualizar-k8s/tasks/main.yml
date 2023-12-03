@@ -1,0 +1,38 @@
+---
+- name: Realizar cordon e drenar o node
+  include_tasks: drain.yml
+
+- name: Atualizar o sistema operacional
+  include_tasks: "{{ ansible_distribution | lower }}.yml"
+
+- name: Remover cordon e desdrenar
+  include_tasks: undrain.yml
+
+
+
+
+
+#- name: Get the node's details
+#  command: >-
+#    {{ bin_dir }}/kubectl get node
+#    {{ kube_override_hostname|default(inventory_hostname) }}
+#    -o json
+#  register: kubectl_get_node
+#  delegate_to: "{{ groups['kube-master'][0] }}"
+#  failed_when: false
+#  changed_when: false
+#
+#- name: Update Node
+#  when:
+#    - kubectl_get_node.stdout | from_json | json_query("status.conditions[?type == 'Ready'].status")
+#    - not (kubectl_get_node.stdout | from_json).spec.unschedulable is defined
+#  block:
+#    - name: Cordon & drain node
+#      include_tasks: drain.yml
+#
+#    - name: Upgrade the Operating System
+#      include_tasks: "{{ ansible_distribution | lower }}.yml"
+#
+#    - name: Uncordon node
+#      include_tasks: uncordon.yml
+#

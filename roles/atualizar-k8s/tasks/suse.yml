@@ -1,0 +1,15 @@
+---
+- name: Atualizar todos os pacotes no SUSE
+  zypper:
+    name: "*"
+    state: latest
+
+- name: Verificar a necessidade de reinicialização no SUSE
+  stat:
+    path: /var/run/reboot-required
+  register: reinicializacao_necessaria
+
+- name: Reiniciar o servidor no SUSE
+  reboot:
+    post_reboot_delay: 30
+  when: reinicializacao_necessaria.stat.exists

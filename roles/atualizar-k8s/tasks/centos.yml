@@ -1,0 +1,16 @@
+---
+- name: Atualizar todos os pacotes no CentOS
+  yum:
+    name: "*"
+    state: latest
+
+- name: Verificar se reinicialização é necessária no CentOS
+  command: needs-restarting -r
+  register: reinicializacao_necessaria
+  changed_when: false
+
+- name: Reiniciar o servidor no CentOS
+  reboot:
+    post_reboot_delay: 30
+  when: reinicializacao_necessaria.stat.exists
+  
