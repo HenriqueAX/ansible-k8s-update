@@ -1,20 +1,6 @@
 # Atualização Automática do Cluster Kubernetes
 
-Este repositório contém um projeto Ansible para automatizar a atualização de sistemas em um cluster Kubernetes. A estrutura do projeto é organizada da seguinte forma:
-
-├── inventory.ini
-├── playbook.yml
-└── roles
-    └── atualizar-k8s
-        └── tasks
-            ├── centos.yml
-            ├── drain.yml
-            ├── main.yml
-            ├── suse.yml
-            ├── ubuntu.yml
-            └── undrain.yml
-
-
+Este repositório contém um projeto Ansible para automatizar a atualização de sistemas em um cluster Kubernetes
 
 ## Descrição dos Arquivos
 
