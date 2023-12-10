@@ -6,7 +6,7 @@ Este repositório contém um projeto Ansible para automatizar a atualização de
 
 ### `playbook.yml`
 
-Executa as tarefas de atualização nos nodes do cluster Kubernetes.
+Executa as tarefas de atualização presente na role atualizar-k8s nos nodes do cluster Kubernetes.
 
 ### `inventory.ini`
 
@@ -14,11 +14,11 @@ Arquivo de inventário do Ansible que lista os endereços de acesso aos nodes do
 
 ### `roles/atualizar-k8s/tasks/main.yml`
 
-Inclui as tarefas de cordon e drain, atualização do sistema operacional e desativação do cordon e drain, chamando as tasks presentes na role "atualizar-k8s" para realizar esses procedimentos.
+Inclui as tarefas de cordon e drain, atualização do sistema operacional e desativação do cordon e drain, chamando os arquivos que contém as tasks presentes na role "atualizar-k8s" para realizar esses procedimentos, incluindo a chamada de um arquivo específico de atualização para cada sistema (Ubuntu, CentOS e SUSE).
 
 ### `roles/atualizar-k8s/tasks/drain.yml`
 
-Realiza o cordon, drain e verifica se os processos foram bem sucedidos antes de prosseguir.
+Realiza o cordon, drain e verifica se os processos foram bem sucedidos antes de prosseguir. Na configuração presente no repositório, esse arquivo delega a tarefa para o primeiro node do grupo k8s-master, o que significa que todos comandos partirão desse primeiro node, mesmo que a task esteja sendo executada direcionando para outros nodes.
 
 ### `roles/atualizar-k8s/tasks/centos.yml`
 
@@ -44,4 +44,4 @@ Desabilita o cordon e drain em um node do Kubernetes, aguardando até que o node
 
 Certifique-se de ter as permissões adequadas e as chaves SSH configuradas corretamente para acessar os nodes.
 
-**Observação:** Este projeto assume que o `kubectl` está disponível no caminho especificado pela variável `bin_dir` (Por padrão seria o diretório /bin). Não esqueça de ajustar conforme necessário.
+**Observação:** Este projeto necessita que o `kubectl` esteja disponível no caminho especificado pela variável `bin_dir` dentro do cluster (Por padrão seria o diretório /bin).
